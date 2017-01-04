@@ -6,6 +6,11 @@ var options = {
 
 var mobileApp = require('azure-mobile-apps')(options);
 
+// Define the database schema that is exposed
+mobileApp.tables.import('./tables');
 
-app.use(mobileApp);
-app.listen(process.env.PORT || 3000);
+mobileApp.tables.initialize()
+    .then(function(){
+        app.use(mobileApp);
+        app.listen(process.env.PORT || 3000);
+    });
