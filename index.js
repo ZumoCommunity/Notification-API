@@ -9,6 +9,9 @@ var mobileApp = require('azure-mobile-apps')(options);
 // Define the database schema that is exposed
 mobileApp.tables.import('./tables');
 
+//importing api
+mobileApp.api.import('./api');
+
 mobileApp.tables.initialize()
     .then(function(){
         app.use(mobileApp);

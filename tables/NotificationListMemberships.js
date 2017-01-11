@@ -9,4 +9,10 @@ table.columns = {
 // Turn off dynamic schema
 table.dynamicSchema = false;
 
+table.seed = [
+    {"listId": "1", "memberId" : "2"},
+    {"listId": "1", "memberId" : "3"},
+    {"listId": "2", "memberId" : "3"}
+]
+
 module.exports = table;
