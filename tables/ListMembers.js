@@ -13,7 +13,8 @@ table.dynamicSchema = false;
 table.seed = [
     {"fullName" : "Anton Boyko", "email" : "boyko.ant@live.com", "id" : "1"},
     {"fullName" : "Yevhen Vakulchyk", "email" : "e.vakulchyk@gmail.com", "id" : "2"},
-    {"fullName" : "Yevhen Outlook", "email" : "yevak@outlook.com", "id" : "3"}
+    {"fullName" : "Y Vak", "email" : "yevakulc@microsoft.com", "id" : "3"},
+    {"fullName" : "Yevhen Outlook", "email" : "yevak@outlook.com", "id" : "4"}
 ]
 
 module.exports = table;

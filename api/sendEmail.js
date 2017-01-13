@@ -2,12 +2,12 @@ var emailService = require('./../services/emailService');
 
 var api = {
     post: function(request, response, next) {
-
-
-        var listId = request.body.listId;
+        console.log(request.body);
+        
+        var listIds = request.body.listIds;
         var letterText =  request.body.text;
 
-        emailService.sendEmailToList(request.azureMobile, listId, letterText);
+        emailService.sendEmailToList(request.azureMobile, listIds, letterText);
         response.json({});
     }
 };

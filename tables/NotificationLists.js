@@ -9,8 +9,8 @@ table.columns = {
 table.dynamicSchema = false;
 
 table.seed = [
-    {"title": "January congerence", "id" : "1"},
-    {"title": "February congerence", "id" : "2"}
+    {"title": "January conference", "id" : "1"},
+    {"title": "February conference", "id" : "2"}
 ]
 
 module.exports = table;

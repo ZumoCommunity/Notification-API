@@ -11,7 +11,7 @@ table.dynamicSchema = false;
 
 table.seed = [
     {"listId": "1", "memberId" : "2"},
-    {"listId": "1", "memberId" : "3"},
+    {"listId": "2", "memberId" : "2"},
     {"listId": "2", "memberId" : "3"}
 ]
 
