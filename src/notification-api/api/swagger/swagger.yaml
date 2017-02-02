@@ -1,0 +1,150 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: contacts API app
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+  - text/plain
+paths:
+  /contacts:
+    get:
+      description: return all contacts from DB
+      # produces:
+      # - application/json
+      responses:
+        '200':
+          description: List of contacts
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/contacts'
+    post:
+      description: Add user to the contact table 
+      # used as the method name of the controller
+      operationId: addUser
+      parameters:
+        - name: addUser
+          in: body
+          description: add user to contact table
+          required: true
+          schema:
+            $ref: "#/definitions/add"
+      responses:
+        "200":
+          description: Success
+        
+  /contacts/{id}:
+    get:
+      description: Return contacts by ID
+      # operationId: getcontactbyid
+      produces: 
+      - application/json
+      - text/html
+      responses:
+        '200':
+          description: contact by id
+          schema: 
+            type: object
+            items:
+              $ref: '#/definitions/contact'
+        # default:
+        #   description: error payload
+        #   schema:
+        #     $ref: '#/definitions/ErrorModel'
+      parameters:
+      - name: id
+        in: path
+        description: ID of contact to use
+        required: true
+        type: string
+    delete:
+      description: Return contacts by ID
+      # operationId: getcontactbyid
+      produces: 
+      - application/json
+      - text/html
+      responses:
+        '200':
+          description: contact by id
+          schema: 
+            type: object
+            items:
+              $ref: '#/definitions/contact'
+        # default:
+        #   description: error payload
+        #   schema:
+        #     $ref: '#/definitions/ErrorModel'
+      parameters:
+      - name: id
+        in: path
+        description: ID of contact to use
+        required: true
+        type: string
+    put:
+      description: Add user to the contact table 
+      # used as the method name of the controller
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          description: ID of contact to use
+          required: true
+          type: string      
+        - name: addUser
+          in: body
+          description: add user to contact table
+          required: true
+          schema:
+            $ref: "#/definitions/add"
+      responses:
+        "200":
+          description: Success
+          
+  #describing work with list
+  # /list  
+    
+# complex objects have schema definitions
+definitions:
+  contact:
+    type: object
+    properties:
+      email:
+        type: string
+      facebook:
+        type: string
+      skype:
+        type: string
+      id:
+        type: string
+        
+  contacts:
+    type: array
+    items:
+      $ref: "#/definitions/contact"
+      
+  
+  add:
+    type: object
+    properties:
+      email:
+        type: string
+      facebook:
+        description: profile id
+        type: string
+      skype:
+        description: profile id
+        type: string
+        
