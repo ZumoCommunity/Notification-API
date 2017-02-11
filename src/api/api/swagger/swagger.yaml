@@ -102,6 +102,89 @@ paths:
             type: object
             items:
               $ref: '#/definitions/Contact'
+  /lists:
+    x-swagger-router-controller: lists-controller
+    get:
+      description: Returns all lists
+      operationId: getAllLists
+      tags: ['Lists']
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ListsList'
+    post:
+      description: Add new list
+      operationId: addList
+      tags: ['Lists']
+      parameters:
+        - name: entity
+          in: body
+          description: new list
+          required: true
+          schema:
+            $ref: "#/definitions/List"
+      responses:
+        "200":
+          description: Success
+          schema: 
+            $ref: '#/definitions/List'
+  /lists/{id}:
+    x-swagger-router-controller: lists-controller
+    get:
+      description: Returns list by id
+      operationId: getListById
+      tags: ['Lists']
+      parameters:
+      - name: id
+        in: path
+        description: id of list to look for
+        required: true
+        type: string
+        format: uuid
+      responses:
+        '200':
+          description: Success
+          schema: 
+            $ref: '#/definitions/List'
+    delete:
+      description: Deletes list by id
+      operationId: deleteListById
+      tags: ['Lists']
+      parameters:
+      - name: id
+        in: path
+        description: id of list to look for
+        required: true
+        type: string
+        format: uuid
+      responses:
+        '200':
+          description: Success
+    put:
+      description: Updates existing list
+      operationId: updateList
+      tags: ['Lists']
+      parameters:
+        - name: id
+          in: path
+          description: id of list to look for
+          required: true
+          type: string
+          format: uuid
+        - name: entity
+          in: body
+          description: list
+          required: true
+          schema:
+            $ref: "#/definitions/List"
+      responses:
+        "200":
+          description: Success
+          schema: 
+            $ref: '#/definitions/List'              
 definitions:
   Contact:
     type: object
@@ -120,3 +203,16 @@ definitions:
     type: array
     items:
       $ref: "#/definitions/Contact"
+  List:
+    type: object
+    required: ['id', 'title']
+    properties:
+      title:
+        type: string
+      id:
+        type: string
+        format: uuid
+  ListsList:
+    type: array
+    items:
+      $ref: "#/definitions/List"      
