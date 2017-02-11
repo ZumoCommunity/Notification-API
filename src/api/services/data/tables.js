@@ -1,8 +1,15 @@
 var Promise = require('Promise');
+var uuid = require('uuid');
 
 var configService = require('./../config-service');
 
 var service = {};
+
+service.defaultPK = '';
+
+service.getNewId = function() {
+    return uuid.v4();
+};
 
 service.tableNames = {
     contacts: 'Contacts',
