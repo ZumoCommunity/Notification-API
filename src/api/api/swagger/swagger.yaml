@@ -14,6 +14,7 @@ produces:
   - text/plain
 paths:
   /contacts:
+    x-swagger-router-controller: contacts-controller
     get:
       description: Returns all contacts
       operationId: getAllContacts
@@ -30,7 +31,7 @@ paths:
       operationId: addContact
       tags: ['Contacts']
       parameters:
-        - name: contact
+        - name: entity
           in: body
           description: new contact
           required: true
@@ -44,6 +45,7 @@ paths:
             items:
               $ref: '#/definitions/Contact'
   /contacts/{id}:
+    x-swagger-router-controller: contacts-controller
     get:
       description: Returns contacts by id
       operationId: getContactById
@@ -87,7 +89,7 @@ paths:
           required: true
           type: string
           format: uuid
-        - name: contact
+        - name: entity
           in: body
           description: contact
           required: true
