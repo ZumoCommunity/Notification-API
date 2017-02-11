@@ -40,14 +40,12 @@ paths:
       responses:
         "200":
           description: Success
-          schema: 
-            type: object
-            items:
-              $ref: '#/definitions/Contact'
+          schema:
+            $ref: '#/definitions/Contact'
   /contacts/{id}:
     x-swagger-router-controller: contacts-controller
     get:
-      description: Returns contacts by id
+      description: Returns contact by id
       operationId: getContactById
       tags: ['Contacts']
       parameters:
@@ -61,9 +59,7 @@ paths:
         '200':
           description: Success
           schema: 
-            type: object
-            items:
-              $ref: '#/definitions/Contact'
+            $ref: '#/definitions/Contact'
     delete:
       description: Deletes contact by id
       operationId: deleteContactById
@@ -99,9 +95,7 @@ paths:
         "200":
           description: Success
           schema: 
-            type: object
-            items:
-              $ref: '#/definitions/Contact'
+            $ref: '#/definitions/Contact'
   /lists:
     x-swagger-router-controller: lists-controller
     get:
