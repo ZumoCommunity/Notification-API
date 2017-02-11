@@ -1,125 +1,109 @@
 swagger: "2.0"
 info:
   version: "0.0.1"
-  title: contacts API app
-# during dev, should point to your local machine
+  title: Notification-API
 host: localhost:10010
-# basePath prefixes all resource paths 
 basePath: /
-# 
 schemes:
-  # tip: remove http to make production-grade
   - http
   - https
-# format of bodies a client can send (Content-Type)
 consumes:
   - application/json
-# format of the responses to the client (Accepts)
 produces:
   - application/json
   - text/plain
 paths:
   /contacts:
     get:
-      description: return all contacts from DB
-      # produces:
-      # - application/json
+      description: Returns all contacts
+      operationId: getAllContacts
+      tags: ['Contacts']
       responses:
         '200':
-          description: List of contacts
+          description: Success
           schema:
             type: array
             items:
-              $ref: '#/definitions/contacts'
+              $ref: '#/definitions/ContactsList'
     post:
-      description: Add user to the contact table 
-      # used as the method name of the controller
-      operationId: addUser
+      description: Add new contact
+      operationId: addContact
+      tags: ['Contacts']
       parameters:
-        - name: addUser
+        - name: contact
           in: body
-          description: add user to contact table
+          description: new contact
           required: true
           schema:
-            $ref: "#/definitions/add"
+            $ref: "#/definitions/Contact"
       responses:
         "200":
           description: Success
-        
+          schema: 
+            type: object
+            items:
+              $ref: '#/definitions/Contact'
   /contacts/{id}:
     get:
-      description: Return contacts by ID
-      # operationId: getcontactbyid
-      produces: 
-      - application/json
-      - text/html
-      responses:
-        '200':
-          description: contact by id
-          schema: 
-            type: object
-            items:
-              $ref: '#/definitions/contact'
-        # default:
-        #   description: error payload
-        #   schema:
-        #     $ref: '#/definitions/ErrorModel'
+      description: Returns contacts by id
+      operationId: getContactById
+      tags: ['Contacts']
       parameters:
       - name: id
         in: path
-        description: ID of contact to use
+        description: id of contact to look for
         required: true
         type: string
+        format: uuid
+      responses:
+        '200':
+          description: Success
+          schema: 
+            type: object
+            items:
+              $ref: '#/definitions/Contact'
     delete:
-      description: Return contacts by ID
-      # operationId: getcontactbyid
-      produces: 
-      - application/json
-      - text/html
-      responses:
-        '200':
-          description: contact by id
-          schema: 
-            type: object
-            items:
-              $ref: '#/definitions/contact'
-        # default:
-        #   description: error payload
-        #   schema:
-        #     $ref: '#/definitions/ErrorModel'
+      description: Deletes contact by id
+      operationId: deleteContactById
+      tags: ['Contacts']
       parameters:
       - name: id
         in: path
-        description: ID of contact to use
+        description: id of contact to look for
         required: true
         type: string
+        format: uuid
+      responses:
+        '200':
+          description: Success
     put:
-      description: Add user to the contact table 
-      # used as the method name of the controller
-      operationId: updateUser
+      description: Updates existing contact
+      operationId: updateContact
+      tags: ['Contacts']
       parameters:
         - name: id
           in: path
-          description: ID of contact to use
+          description: id of contact to look for
           required: true
-          type: string      
-        - name: addUser
+          type: string
+          format: uuid
+        - name: contact
           in: body
-          description: add user to contact table
+          description: contact
           required: true
           schema:
-            $ref: "#/definitions/add"
+            $ref: "#/definitions/Contact"
       responses:
         "200":
           description: Success
-          
-  #describing work with list
-  # /list  
-    
-# complex objects have schema definitions
+          schema: 
+            type: object
+            items:
+              $ref: '#/definitions/Contact'
 definitions:
-  contact:
+  Contact:
     type: object
+    required: ['id']
     properties:
       email:
         type: string
@@ -129,22 +113,8 @@ definitions:
         type: string
       id:
         type: string
-        
-  contacts:
+        format: uuid
+  ContactsList:
     type: array
     items:
-      $ref: "#/definitions/contact"
-      
-  
-  add:
-    type: object
-    properties:
-      email:
-        type: string
-      facebook:
-        description: profile id
-        type: string
-      skype:
-        description: profile id
-        type: string
-        
+      $ref: "#/definitions/Contact"
