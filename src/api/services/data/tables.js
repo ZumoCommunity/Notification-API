@@ -11,11 +11,13 @@ service.getNewId = function() {
     return uuid.v4();
 };
 
+var tablePrefix = 'Notification_';
+
 service.tableNames = {
-    contacts: 'Contacts',
-    contactsLists: 'ContactsLists',
-    lists: 'Lists',
-    listsContacts: 'ListsContacts'
+    contacts: tablePrefix + 'Contacts',
+    contactsLists: tablePrefix + 'ContactsLists',
+    lists: tablePrefix + 'Lists',
+    listsContacts: tablePrefix + 'ListsContacts'
 };
 
 var azureStorage = require('azure-storage');
