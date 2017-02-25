@@ -96,6 +96,48 @@ paths:
           description: Success
           schema: 
             $ref: '#/definitions/Contact'
+  /contacts/{contactId}/lists/{listId}:
+    x-swagger-router-controller: contacts-controller
+    post:
+      description: Subscribe contact to list
+      operationId: subscribeContractToList
+      tags: ['Contacts']
+      parameters:
+      - name: contactId
+        in: path
+        description: id of contact
+        required: true
+        type: string
+        format: uuid
+      - name: listId
+        in: path
+        description: id of list
+        required: true
+        type: string
+        format: uuid
+      responses:
+        "200":
+          description: Success
+    delete:
+      description: Unsubscribe contact from list
+      operationId: unsubscribeContractFromList
+      tags: ['Contacts']
+      parameters:
+      - name: contactId
+        in: path
+        description: id of contact
+        required: true
+        type: string
+        format: uuid
+      - name: listId
+        in: path
+        description: id of list
+        required: true
+        type: string
+        format: uuid
+      responses:
+        "200":
+          description: Success
   /lists:
     x-swagger-router-controller: lists-controller
     get:
@@ -179,6 +221,48 @@ paths:
           description: Success
           schema: 
             $ref: '#/definitions/List'              
+  /lists/{listId}/contacts/{contactId}:
+    x-swagger-router-controller: lists-controller
+    post:
+      description: Subscribe contact to list
+      operationId: addContractToList
+      tags: ['Lists']
+      parameters:
+      - name: contactId
+        in: path
+        description: id of contact
+        required: true
+        type: string
+        format: uuid
+      - name: listId
+        in: path
+        description: id of list
+        required: true
+        type: string
+        format: uuid
+      responses:
+        "200":
+          description: Success
+    delete:
+      description: Unsubscribe contact from list
+      operationId: removeContractFromList
+      tags: ['Lists']
+      parameters:
+      - name: contactId
+        in: path
+        description: id of contact
+        required: true
+        type: string
+        format: uuid
+      - name: listId
+        in: path
+        description: id of list
+        required: true
+        type: string
+        format: uuid
+      responses:
+        "200":
+          description: Success
 definitions:
   Contact:
     type: object
