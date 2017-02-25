@@ -96,6 +96,24 @@ paths:
           description: Success
           schema: 
             $ref: '#/definitions/Contact'
+  /contacts/{id}/lists:
+    x-swagger-router-controller: contacts-controller
+    get:
+      description: Returns all lists current contact subscribed
+      operationId: getListsByContactId
+      tags: ['Contacts']
+      parameters:
+      - name: id
+        in: path
+        description: id of contact to look for
+        required: true
+        type: string
+        format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ListsList'
   /contacts/{contactId}/lists/{listId}:
     x-swagger-router-controller: contacts-controller
     post:
@@ -221,6 +239,24 @@ paths:
           description: Success
           schema: 
             $ref: '#/definitions/List'              
+  /lists/{id}/contacts:
+    x-swagger-router-controller: lists-controller
+    get:
+      description: Returns all contacts subscribed to current list
+      operationId: getContactsByListId
+      tags: ['Lists']
+      parameters:
+      - name: id
+        in: path
+        description: id of list to look for
+        required: true
+        type: string
+        format: uuid
+      responses:
+        '200':
+          description: Success
+          schema: 
+            $ref: '#/definitions/ContactsList'
   /lists/{listId}/contacts/{contactId}:
     x-swagger-router-controller: lists-controller
     post:
