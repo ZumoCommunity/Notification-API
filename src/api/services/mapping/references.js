@@ -5,16 +5,15 @@ var service = {};
 
 service.toStorage = function(appModel) {
     return {
-        PartitionKey: entityGenerator.String(''),
-        RowKey: entityGenerator.String(appModel.id),
-        Title: entityGenerator.String(appModel.title)
+        PartitionKey: entityGenerator.String(appModel.parentId),
+        RowKey: entityGenerator.String(appModel.childId)
     };
 };
 
 service.toApp = function(storageModel) {
     return {
-        id: storageModel.RowKey._,
-        title: storageModel.Title._
+        parentId: storageModel.PartitionKey._,
+        childId: storageModel.RowKey._
     };
 };
 
