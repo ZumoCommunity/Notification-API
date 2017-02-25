@@ -22,13 +22,22 @@ module.exports = {
     deleteListById: function(req, res){
         var id = req.swagger.params.id.value;
 
-        res.status(200).end();
+        listsService
+            .deleteList(id)
+            .then(function () {
+                res.status(200).end();
+            });
     },
     updateList: function(req, res){
         var id = req.swagger.params.id.value;
         var entity = req.swagger.params.entity.value;
 
         res.json(entity);
+    },
+    getContactsByListId: function(req, res){
+        var id = req.swagger.params.id.value;
+
+        res.json([]);
     },
     addContractToList: function(req, res){
         var contactId = req.swagger.params.contactId.value;
