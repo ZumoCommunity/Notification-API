@@ -1,11 +1,12 @@
 var Promise = require('promise');
 
+var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
 var SwaggerExpress = require('swagger-express-mw');
 var app = require('express')();
 
 module.exports = app;
 
-var SwaggerUi = require('swagger-tools/middleware/swagger-ui');
+var initializationService = require('./services/initializationService');
 
 var swaggerExpressConfig = {
     appRoot: __dirname
@@ -25,6 +26,12 @@ SwaggerExpress.create(swaggerExpressConfig, function(err, swaggerExpress) {
 
     swaggerExpress.register(app);
 
-    var port = process.env.PORT || 10010;
-    app.listen(port);
+    initializationService
+        .init()
+        .then(function () {
+            var port = process.env.PORT || 10010;
+            app.listen(port);
+
+            console.log('Notification API ready on port ' + port);
+        });
 });
