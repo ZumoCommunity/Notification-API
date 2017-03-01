@@ -1,0 +1,343 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Notification-API
+host: localhost:10010
+basePath: /
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+  - text/plain
+paths:
+  /contacts:
+    x-swagger-router-controller: contacts-controller
+    get:
+      description: Returns all contacts
+      operationId: getAllContacts
+      tags: ['Contacts']
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Contact'
+    post:
+      description: Add new contact
+      operationId: addContact
+      tags: ['Contacts']
+      parameters:
+        - name: entity
+          in: body
+          description: new contact
+          required: true
+          schema:
+            $ref: "#/definitions/ContactBody"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/Contact'
+  /contacts/{id}:
+    x-swagger-router-controller: contacts-controller
+    get:
+      description: Returns contact by id
+      operationId: getContactById
+      tags: ['Contacts']
+      parameters:
+      - name: id
+        in: path
+        description: id of contact to look for
+        required: true
+        type: string
+        format: uuid
+      responses:
+        '200':
+          description: Success
+          schema: 
+            $ref: '#/definitions/Contact'
+    delete:
+      description: Deletes contact by id
+      operationId: deleteContactById
+      tags: ['Contacts']
+      parameters:
+      - name: id
+        in: path
+        description: id of contact to look for
+        required: true
+        type: string
+        format: uuid
+      responses:
+        '200':
+          description: Success
+    put:
+      description: Updates existing contact
+      operationId: updateContact
+      tags: ['Contacts']
+      parameters:
+        - name: id
+          in: path
+          description: id of contact to look for
+          required: true
+          type: string
+          format: uuid
+        - name: entity
+          in: body
+          description: contact
+          required: true
+          schema:
+            $ref: "#/definitions/ContactBody"
+      responses:
+        "200":
+          description: Success
+          schema: 
+            $ref: '#/definitions/Contact'
+  /contacts/{id}/lists:
+    x-swagger-router-controller: contacts-controller
+    get:
+      description: Returns all lists current contact subscribed
+      operationId: getListsByContactId
+      tags: ['Contacts']
+      parameters:
+      - name: id
+        in: path
+        description: id of contact to look for
+        required: true
+        type: string
+        format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/List'
+  /contacts/{contactId}/lists/{listId}:
+    x-swagger-router-controller: contacts-controller
+    post:
+      description: Subscribe contact to list
+      operationId: subscribeContractToList
+      tags: ['Contacts']
+      parameters:
+      - name: contactId
+        in: path
+        description: id of contact
+        required: true
+        type: string
+        format: uuid
+      - name: listId
+        in: path
+        description: id of list
+        required: true
+        type: string
+        format: uuid
+      responses:
+        "200":
+          description: Success
+    delete:
+      description: Unsubscribe contact from list
+      operationId: unsubscribeContractFromList
+      tags: ['Contacts']
+      parameters:
+      - name: contactId
+        in: path
+        description: id of contact
+        required: true
+        type: string
+        format: uuid
+      - name: listId
+        in: path
+        description: id of list
+        required: true
+        type: string
+        format: uuid
+      responses:
+        "200":
+          description: Success
+  /lists:
+    x-swagger-router-controller: lists-controller
+    get:
+      description: Returns all lists
+      operationId: getAllLists
+      tags: ['Lists']
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/List'
+    post:
+      description: Add new list
+      operationId: addList
+      tags: ['Lists']
+      parameters:
+        - name: entity
+          in: body
+          description: new list
+          required: true
+          schema:
+            $ref: "#/definitions/ListBody"
+      responses:
+        "200":
+          description: Success
+          schema: 
+            $ref: '#/definitions/List'
+  /lists/{id}:
+    x-swagger-router-controller: lists-controller
+    get:
+      description: Returns list by id
+      operationId: getListById
+      tags: ['Lists']
+      parameters:
+      - name: id
+        in: path
+        description: id of list to look for
+        required: true
+        type: string
+        format: uuid
+      responses:
+        '200':
+          description: Success
+          schema: 
+            $ref: '#/definitions/List'
+    delete:
+      description: Deletes list by id
+      operationId: deleteListById
+      tags: ['Lists']
+      parameters:
+      - name: id
+        in: path
+        description: id of list to look for
+        required: true
+        type: string
+        format: uuid
+      responses:
+        '200':
+          description: Success
+    put:
+      description: Updates existing list
+      operationId: updateList
+      tags: ['Lists']
+      parameters:
+        - name: id
+          in: path
+          description: id of list to look for
+          required: true
+          type: string
+          format: uuid
+        - name: entity
+          in: body
+          description: list
+          required: true
+          schema:
+            $ref: "#/definitions/ListBody"
+      responses:
+        "200":
+          description: Success
+          schema: 
+            $ref: '#/definitions/List'              
+  /lists/{id}/contacts:
+    x-swagger-router-controller: lists-controller
+    get:
+      description: Returns all contacts subscribed to current list
+      operationId: getContactsByListId
+      tags: ['Lists']
+      parameters:
+      - name: id
+        in: path
+        description: id of list to look for
+        required: true
+        type: string
+        format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Contact'
+  /lists/{listId}/contacts/{contactId}:
+    x-swagger-router-controller: lists-controller
+    post:
+      description: Subscribe contact to list
+      operationId: addContractToList
+      tags: ['Lists']
+      parameters:
+      - name: contactId
+        in: path
+        description: id of contact
+        required: true
+        type: string
+        format: uuid
+      - name: listId
+        in: path
+        description: id of list
+        required: true
+        type: string
+        format: uuid
+      responses:
+        "200":
+          description: Success
+    delete:
+      description: Unsubscribe contact from list
+      operationId: removeContractFromList
+      tags: ['Lists']
+      parameters:
+      - name: contactId
+        in: path
+        description: id of contact
+        required: true
+        type: string
+        format: uuid
+      - name: listId
+        in: path
+        description: id of list
+        required: true
+        type: string
+        format: uuid
+      responses:
+        "200":
+          description: Success
+definitions:
+  Contact:
+    type: object
+    required: ['id']
+    properties:
+      email:
+        type: string
+      facebook:
+        type: string
+      skype:
+        type: string
+      id:
+        type: string
+        format: uuid
+  ContactBody:
+    type: object
+    properties:
+      email:
+        type: string
+      facebook:
+        type: string
+      skype:
+        type: string
+  List:
+    type: object
+    required: ['id', 'title']
+    properties:
+      title:
+        type: string
+      id:
+        type: string
+        format: uuid
+  ListBody:
+    type: object
+    required: ['title']
+    properties:
+      title:
+        type: string     
