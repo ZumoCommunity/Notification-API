@@ -4,6 +4,7 @@ var appService = require('./../../services/app-service');
 var tableService = require('./../../services/data-service').tables;
 
 var contactsService = appService.contacts;
+var listsService = appService.lists;
 var referencesService = appService.references(tableService.tableNames.contactsLists, tableService.tableNames.listsContacts);
 
 module.exports = {
@@ -55,14 +56,21 @@ module.exports = {
     getListsByContactId: function(req, res){
         var id = req.swagger.params.id.value;
 
-        res.json([]);
+        referencesService
+            .getParentsByChild(id)
+            .then(function (ids) {
+                return listsService.getListsByIds(ids);
+            })
+            .then(function (lists) {
+                res.json(lists);
+            });
     },
     subscribeContractToList: function(req, res){
         var contactId = req.swagger.params.contactId.value;
         var listId = req.swagger.params.listId.value;
 
         referencesService
-            .addReference(contactId, listId)
+            .addReference(listId, contactId)
             .then(function () {
                 res.status(200).end();
             });
@@ -72,7 +80,7 @@ module.exports = {
         var listId = req.swagger.params.listId.value;
 
         referencesService
-            .deleteReference(contactId, listId)
+            .deleteReference(listId, contactId)
             .then(function () {
                 res.status(200).end();
             });

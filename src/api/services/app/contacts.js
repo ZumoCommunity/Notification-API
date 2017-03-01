@@ -9,8 +9,8 @@ service.getAllContacts = function() {
     return tableService
         .getByFilter(tableService.tableNames.contacts)
         .then(function(entities) {
-            entities = entities.map(mappingService.contacts.toApp);
-            return Promise.resolve(entities);
+            var contacts = entities.map(mappingService.contacts.toApp);
+            return Promise.resolve(contacts);
         });
 };
 
@@ -48,6 +48,15 @@ service.deleteContact = function(id) {
     promises.push(tableService.deleteByFilter(tableService.tableNames.listsContacts, { RowKey: id }));
 
     return Promise.all(promises);
+};
+
+service.getContactsByIds = function (ids) {
+    return tableService
+        .getByRowKeys(tableService.tableNames.contacts, tableService.defaultPK, ids)
+        .then(function(entities) {
+            var contacts = entities.map(mappingService.contacts.toApp);
+            return Promise.resolve(contacts);
+        });
 };
 
 module.exports = service;

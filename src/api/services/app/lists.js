@@ -9,8 +9,8 @@ service.getAllLists = function() {
     return tableService
         .getByFilter(tableService.tableNames.lists)
         .then(function(entities) {
-            entities = entities.map(mappingService.lists.toApp);
-            return Promise.resolve(entities);
+            var lists = entities.map(mappingService.lists.toApp);
+            return Promise.resolve(lists);
         });
 };
 
@@ -37,6 +37,15 @@ service.insertOrReplaceList = function(list) {
             return Promise.resolve(insertedList);
         }, function(error) {
             return Promise.reject(error);
+        });
+};
+
+service.getListsByIds = function (ids) {
+    return tableService
+        .getByRowKeys(tableService.tableNames.lists, tableService.defaultPK, ids)
+        .then(function(entities) {
+            var lists = entities.map(mappingService.lists.toApp);
+            return Promise.resolve(lists);
         });
 };
 

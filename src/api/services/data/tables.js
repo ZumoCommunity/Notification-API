@@ -82,6 +82,18 @@ service.getByFilter = function(tableName, partitionKey, rowKey, customFilter) {
     });
 };
 
+service.getByRowKeys = function(tableName, partitionKey, rowKeys) {
+    if (rowKeys.length == 0) {
+        return Promise.resolve([]);
+    }
+
+    var promises = rowKeys.map(function (rowKey) {
+        return service.retrieveEntity(tableName, partitionKey, rowKey);
+    });
+
+    return Promise.all(promises);
+};
+
 service.retrieveEntity = function(tableName, partitionKey, rowKey) {
     return new Promise(function(resolve, reject) {
         azureStorageTableService.retrieveEntity(tableName, partitionKey, rowKey, function(error, result, response) {
