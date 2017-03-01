@@ -16,10 +16,18 @@ service.toStorage = function(appModel) {
 service.toApp = function(storageModel) {
     return {
         id: storageModel.RowKey._,
-        email: storageModel.Title._,
-        facebook: storageModel.Title._,
-        skype: storageModel.Title._
+        email: getValue(storageModel.Email),
+        facebook: getValue(storageModel.Facebook),
+        skype: getValue(storageModel.Skype)
     };
 };
+
+function getValue(property) {
+    if (!property) {
+        return '';
+    } else {
+        return property._;
+    }
+}
 
 module.exports = service;

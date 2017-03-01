@@ -11,7 +11,7 @@ service.getNewId = function() {
     return uuid.v4();
 };
 
-var tablePrefix = 'Notification_';
+var tablePrefix = 'Notification';
 
 service.tableNames = {
     contacts: tablePrefix + 'Contacts',
@@ -66,9 +66,10 @@ service.getByFilter = function(tableName, partitionKey, rowKey, customFilter) {
         }
     }
 
-    var query = !!combinedFilterQuery ?
-        azureStorage.TableQuery().where(combinedFilterQuery) :
-        azureStorage.TableQuery();
+    var query = new azureStorage.TableQuery();
+    if (!!combinedFilterQuery) {
+        query = query.where(combinedFilterQuery);
+    }
 
     return new Promise(function(resolve, reject) {
         azureStorageTableService.queryEntities(tableName, query, null, function(error, result){
@@ -81,8 +82,20 @@ service.getByFilter = function(tableName, partitionKey, rowKey, customFilter) {
     });
 };
 
-service.insertOrReplaceEntity = function(tableName, entity) {
+service.retrieveEntity = function(tableName, partitionKey, rowKey) {
     return new Promise(function(resolve, reject) {
+        azureStorageTableService.retrieveEntity(tableName, partitionKey, rowKey, function(error, result, response) {
+            if (!error) {
+                resolve(result);
+            } else {
+                reject(error);
+            }
+        })
+    });
+};
+
+service.insertOrReplaceEntity = function(tableName, entity) {
+    return (new Promise(function(resolve, reject) {
         azureStorageTableService.insertOrReplaceEntity(tableName, entity, function(error, result, response){
             if (!error) {
                 resolve();
@@ -90,6 +103,10 @@ service.insertOrReplaceEntity = function(tableName, entity) {
                 reject(error);
             }
         });
+    })).then(function() {
+        return service.retrieveEntity(tableName, entity.PartitionKey._, entity.RowKey._);
+    }, function(error) {
+        return Promise.reject(error);
     });
 };
 

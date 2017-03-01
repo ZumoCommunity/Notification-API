@@ -1,23 +1,36 @@
 var Promise = require('Promise');
 
-var appService = require('./../../services/app');
+var appService = require('./../../services/app-service');
+var tableService = require('./../../services/data-service').tables;
 
 var contactsService = appService.contacts;
 var referencesService = appService.references(tableService.tableNames.contactsLists, tableService.tableNames.listsContacts);
 
 module.exports = {
     getAllContacts: function(req, res){
-        res.json([]);
+        contactsService
+            .getAllContacts()
+            .then(function(contacts) {
+                res.json(contacts);
+            });
     },
     addContact: function(req, res){
         var entity = req.swagger.params.entity.value;
 
-        res.json(entity);
+        contactsService
+            .insertOrReplaceContact(entity)
+            .then(function(contact) {
+                res.json(contact);
+            });
     },
     getContactById: function(req, res){
         var id = req.swagger.params.id.value;
 
-        res.json({});
+        contactsService
+            .getContactById(id)
+            .then(function(contact) {
+                res.json(contact);
+            });
     },
     deleteContactById: function(req, res){
         var id = req.swagger.params.id.value;
@@ -31,8 +44,13 @@ module.exports = {
     updateContact: function(req, res){
         var id = req.swagger.params.id.value;
         var entity = req.swagger.params.entity.value;
+        entity.id = id;
 
-        res.json(entity);
+        contactsService
+            .insertOrReplaceContact(entity)
+            .then(function(contact) {
+                res.json(contact);
+            });
     },
     getListsByContactId: function(req, res){
         var id = req.swagger.params.id.value;

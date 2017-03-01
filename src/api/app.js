@@ -33,5 +33,7 @@ SwaggerExpress.create(swaggerExpressConfig, function(err, swaggerExpress) {
             app.listen(port);
 
             console.log('Notification API ready on port ' + port);
+        }, function (error) {
+            console.log(error);
         });
 });

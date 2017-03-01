@@ -25,7 +25,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/ContactsList'
+              $ref: '#/definitions/Contact'
     post:
       description: Add new contact
       operationId: addContact
@@ -36,7 +36,7 @@ paths:
           description: new contact
           required: true
           schema:
-            $ref: "#/definitions/Contact"
+            $ref: "#/definitions/ContactBody"
       responses:
         "200":
           description: Success
@@ -90,7 +90,7 @@ paths:
           description: contact
           required: true
           schema:
-            $ref: "#/definitions/Contact"
+            $ref: "#/definitions/ContactBody"
       responses:
         "200":
           description: Success
@@ -256,7 +256,9 @@ paths:
         '200':
           description: Success
           schema: 
-            $ref: '#/definitions/ContactsList'
+            type: array
+            items:
+              $ref: '#/definitions/Contact'
   /lists/{listId}/contacts/{contactId}:
     x-swagger-router-controller: lists-controller
     post:
@@ -313,10 +315,15 @@ definitions:
       id:
         type: string
         format: uuid
-  ContactsList:
-    type: array
-    items:
-      $ref: "#/definitions/Contact"
+  ContactBody:
+    type: object
+    properties:
+      email:
+        type: string
+      facebook:
+        type: string
+      skype:
+        type: string
   List:
     type: object
     required: ['id', 'title']

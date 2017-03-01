@@ -1,7 +1,7 @@
 var Promise = require('Promise');
 
-var tableService = require('./../data').tables;
-var mappingService = require('./../mapping');
+var tableService = require('./../data-service').tables;
+var mappingService = require('./../mapping-service');
 
 var service = {};
 
@@ -14,14 +14,30 @@ service.getAllContacts = function() {
         });
 };
 
+service.getContactById = function(id) {
+    return tableService
+        .retrieveEntity(tableService.tableNames.contacts, tableService.defaultPK, id)
+        .then(function(entity) {
+            var contact = mappingService.contacts.toApp(entity);
+            return Promise.resolve(contact);
+        });
+};
+
 service.insertOrReplaceContact = function(contact) {
-    if (!!contact.id) {
+    if (!contact.id) {
         contact.id = tableService.getNewId();
     }
 
     var entity = mappingService.contacts.toStorage(contact);
 
-    return tableService.insertOrReplaceEntity(tableService.tableNames.contacts, entity);
+    return tableService
+        .insertOrReplaceEntity(tableService.tableNames.contacts, entity)
+        .then(function(insertedEntity) {
+            var insertedContract = mappingService.contacts.toApp(insertedEntity);
+            return Promise.resolve(insertedContract);
+        }, function(error) {
+            return Promise.reject(error);
+        });
 };
 
 service.deleteContact = function(id) {
