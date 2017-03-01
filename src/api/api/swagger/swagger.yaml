@@ -113,7 +113,9 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/ListsList'
+            type: array
+            items:
+              $ref: '#/definitions/List'
   /contacts/{contactId}/lists/{listId}:
     x-swagger-router-controller: contacts-controller
     post:
@@ -168,7 +170,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/ListsList'
+              $ref: '#/definitions/List'
     post:
       description: Add new list
       operationId: addList
@@ -179,7 +181,7 @@ paths:
           description: new list
           required: true
           schema:
-            $ref: "#/definitions/List"
+            $ref: "#/definitions/ListBody"
       responses:
         "200":
           description: Success
@@ -233,7 +235,7 @@ paths:
           description: list
           required: true
           schema:
-            $ref: "#/definitions/List"
+            $ref: "#/definitions/ListBody"
       responses:
         "200":
           description: Success
@@ -255,7 +257,7 @@ paths:
       responses:
         '200':
           description: Success
-          schema: 
+          schema:
             type: array
             items:
               $ref: '#/definitions/Contact'
@@ -333,7 +335,9 @@ definitions:
       id:
         type: string
         format: uuid
-  ListsList:
-    type: array
-    items:
-      $ref: "#/definitions/List"      
+  ListBody:
+    type: object
+    required: ['title']
+    properties:
+      title:
+        type: string     

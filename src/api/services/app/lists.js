@@ -1,7 +1,7 @@
 var Promise = require('Promise');
 
-var tableService = require('./../data').tables;
-var mappingService = require('./../mapping');
+var tableService = require('./../data-service').tables;
+var mappingService = require('./../mapping-service');
 
 var service = {};
 
@@ -14,14 +14,30 @@ service.getAllLists = function() {
         });
 };
 
+service.getListById = function(id) {
+    return tableService
+        .retrieveEntity(tableService.tableNames.lists, tableService.defaultPK, id)
+        .then(function(entity) {
+            var list = mappingService.lists.toApp(entity);
+            return Promise.resolve(list);
+        });
+};
+
 service.insertOrReplaceList = function(list) {
-    if (!!list.id) {
+    if (!list.id) {
         list.id = tableService.getNewId();
     }
 
     var entity = mappingService.lists.toStorage(list);
 
-    return tableService.insertOrReplaceEntity(tableService.tableNames.lists, entity);
+    return tableService
+        .insertOrReplaceEntity(tableService.tableNames.lists, entity)
+        .then(function(insertedEntity) {
+            var insertedList = mappingService.lists.toApp(insertedEntity);
+            return Promise.resolve(insertedList);
+        }, function(error) {
+            return Promise.reject(error);
+        });
 };
 
 service.deleteList = function(id) {
