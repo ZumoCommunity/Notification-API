@@ -72,15 +72,30 @@ service.getByFilter = function(tableName, partitionKey, rowKey, customFilter) {
     }
 
     return new Promise(function(resolve, reject) {
-        azureStorageTableService.queryEntities(tableName, query, null, function(error, result){
-            if (!error) {
-                resolve(result.entries);
-            } else {
-                reject(error);
-            }
+        queryNext(tableName, query, null, [], function(entities) {
+            resolve(entities);
+        }, function (error) {
+            reject(error);
         });
     });
 };
+
+function queryNext(tableName, query, continuationToken, entities, successCallback, errorCallback) {
+    azureStorageTableService.queryEntities(tableName, query, continuationToken, function(error, result) {
+        if (!error) {
+            result.entries.forEach(function(entity) {
+                entities.push(entity);
+            });
+            if (result.continuationToken) {
+                queryNext(tableName, query, result.continuationToken, entities, successCallback)
+            } else {
+                successCallback(entities);
+            }
+        } else {
+            errorCallback(error);
+        }
+    });
+}
 
 service.getByRowKeys = function(tableName, partitionKey, rowKeys) {
     if (rowKeys.length == 0) {
