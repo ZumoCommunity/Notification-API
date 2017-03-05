@@ -101,6 +101,30 @@ paths:
           description: Success
           schema: 
             $ref: '#/definitions/Contact'
+  /contacts/{id}/notify:
+    x-swagger-router-controller: notification-controller
+    post:
+      description: Send a message to single contact
+      operationId: notifyContact
+      tags: 
+        - Contacts
+        - Notifications
+      parameters:
+      - name: id
+        in: path
+        description: id of contact
+        required: true
+        type: string
+        format: uuid
+      - name: message
+        in: body
+        description: notification message
+        required: true
+        schema:
+          $ref: '#/definitions/NotificationMessage'
+      responses:
+        '200':
+          description: Success
   /contacts/{id}/lists:
     x-swagger-router-controller: contacts-controller
     get:
@@ -254,6 +278,30 @@ paths:
           description: Success
           schema: 
             $ref: '#/definitions/List'              
+  /lists/{id}/notify:
+    x-swagger-router-controller: notification-controller
+    post:
+      description: Send a message to all contacts in a list
+      operationId: notifyList
+      tags: 
+        - Lists
+        - Notifications
+      parameters:
+      - name: id
+        in: path
+        description: id of list
+        required: true
+        type: string
+        format: uuid
+      - name: message
+        in: body
+        description: notification message
+        required: true
+        schema:
+          $ref: '#/definitions/NotificationMessage'
+      responses:
+        '200':
+          description: Success
   /lists/{id}/contacts:
     x-swagger-router-controller: lists-controller
     get:
@@ -360,4 +408,11 @@ definitions:
       - title
     properties:
       title:
-        type: string     
+        type: string
+  NotificationMessage:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
