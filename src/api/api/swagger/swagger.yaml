@@ -1,6 +1,6 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  version: "0.0.1"
+  version: '0.0.1'
   title: Notification-API
 host: localhost:10010
 basePath: /
@@ -18,7 +18,8 @@ paths:
     get:
       description: Returns all contacts
       operationId: getAllContacts
-      tags: ['Contacts']
+      tags: 
+        - Contacts
       responses:
         '200':
           description: Success
@@ -29,16 +30,17 @@ paths:
     post:
       description: Add new contact
       operationId: addContact
-      tags: ['Contacts']
+      tags: 
+        - Contacts
       parameters:
         - name: entity
           in: body
           description: new contact
           required: true
           schema:
-            $ref: "#/definitions/ContactBody"
+            $ref: '#/definitions/ContactBody'
       responses:
-        "200":
+        '200':
           description: Success
           schema:
             $ref: '#/definitions/Contact'
@@ -47,7 +49,8 @@ paths:
     get:
       description: Returns contact by id
       operationId: getContactById
-      tags: ['Contacts']
+      tags: 
+        - Contacts
       parameters:
       - name: id
         in: path
@@ -63,7 +66,8 @@ paths:
     delete:
       description: Deletes contact by id
       operationId: deleteContactById
-      tags: ['Contacts']
+      tags: 
+        - Contacts
       parameters:
       - name: id
         in: path
@@ -77,7 +81,8 @@ paths:
     put:
       description: Updates existing contact
       operationId: updateContact
-      tags: ['Contacts']
+      tags: 
+        - Contacts
       parameters:
         - name: id
           in: path
@@ -90,9 +95,9 @@ paths:
           description: contact
           required: true
           schema:
-            $ref: "#/definitions/ContactBody"
+            $ref: '#/definitions/ContactBody'
       responses:
-        "200":
+        '200':
           description: Success
           schema: 
             $ref: '#/definitions/Contact'
@@ -101,7 +106,8 @@ paths:
     get:
       description: Returns all lists current contact subscribed
       operationId: getListsByContactId
-      tags: ['Contacts']
+      tags: 
+        - Contacts
       parameters:
       - name: id
         in: path
@@ -121,7 +127,8 @@ paths:
     post:
       description: Subscribe contact to list
       operationId: subscribeContractToList
-      tags: ['Contacts']
+      tags: 
+        - Contacts
       parameters:
       - name: contactId
         in: path
@@ -136,12 +143,13 @@ paths:
         type: string
         format: uuid
       responses:
-        "200":
+        '200':
           description: Success
     delete:
       description: Unsubscribe contact from list
       operationId: unsubscribeContractFromList
-      tags: ['Contacts']
+      tags: 
+        - Contacts
       parameters:
       - name: contactId
         in: path
@@ -156,14 +164,15 @@ paths:
         type: string
         format: uuid
       responses:
-        "200":
+        '200':
           description: Success
   /lists:
     x-swagger-router-controller: lists-controller
     get:
       description: Returns all lists
       operationId: getAllLists
-      tags: ['Lists']
+      tags: 
+        - Lists
       responses:
         '200':
           description: Success
@@ -174,16 +183,17 @@ paths:
     post:
       description: Add new list
       operationId: addList
-      tags: ['Lists']
+      tags: 
+        - Lists
       parameters:
         - name: entity
           in: body
           description: new list
           required: true
           schema:
-            $ref: "#/definitions/ListBody"
+            $ref: '#/definitions/ListBody'
       responses:
-        "200":
+        '200':
           description: Success
           schema: 
             $ref: '#/definitions/List'
@@ -192,7 +202,8 @@ paths:
     get:
       description: Returns list by id
       operationId: getListById
-      tags: ['Lists']
+      tags: 
+        - Lists
       parameters:
       - name: id
         in: path
@@ -208,7 +219,8 @@ paths:
     delete:
       description: Deletes list by id
       operationId: deleteListById
-      tags: ['Lists']
+      tags: 
+        - Lists
       parameters:
       - name: id
         in: path
@@ -222,7 +234,8 @@ paths:
     put:
       description: Updates existing list
       operationId: updateList
-      tags: ['Lists']
+      tags: 
+        - Lists
       parameters:
         - name: id
           in: path
@@ -235,9 +248,9 @@ paths:
           description: list
           required: true
           schema:
-            $ref: "#/definitions/ListBody"
+            $ref: '#/definitions/ListBody'
       responses:
-        "200":
+        '200':
           description: Success
           schema: 
             $ref: '#/definitions/List'              
@@ -246,7 +259,8 @@ paths:
     get:
       description: Returns all contacts subscribed to current list
       operationId: getContactsByListId
-      tags: ['Lists']
+      tags: 
+        - Lists
       parameters:
       - name: id
         in: path
@@ -266,7 +280,8 @@ paths:
     post:
       description: Subscribe contact to list
       operationId: addContractToList
-      tags: ['Lists']
+      tags: 
+        - Lists
       parameters:
       - name: contactId
         in: path
@@ -281,12 +296,13 @@ paths:
         type: string
         format: uuid
       responses:
-        "200":
+        '200':
           description: Success
     delete:
       description: Unsubscribe contact from list
       operationId: removeContractFromList
-      tags: ['Lists']
+      tags: 
+        - Lists
       parameters:
       - name: contactId
         in: path
@@ -301,12 +317,13 @@ paths:
         type: string
         format: uuid
       responses:
-        "200":
+        '200':
           description: Success
 definitions:
   Contact:
     type: object
-    required: ['id']
+    required: 
+      - id
     properties:
       email:
         type: string
@@ -328,7 +345,9 @@ definitions:
         type: string
   List:
     type: object
-    required: ['id', 'title']
+    required: 
+      - id
+      - title
     properties:
       title:
         type: string
@@ -337,7 +356,8 @@ definitions:
         format: uuid
   ListBody:
     type: object
-    required: ['title']
+    required: 
+      - title
     properties:
       title:
         type: string     
